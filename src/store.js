@@ -99,11 +99,13 @@ export default new Vuex.Store({
     },
 
     UPDATE_MOVIE_DETAIL(state, movie) {
-      const url_without_prefix = movie.movie_imdb_url.substr(26);
+      const url_without_prefix = movie.movie_imdb_link.substr(26);
       const imdb_id = url_without_prefix.substr(0,  url_without_prefix.indexOf("/"));
 
-      axios.post(`http://${window.location.hostname}:3003/get_movie_detail`, {
-        imdb_id: imdb_id,
+      axios.get(`http://${window.location.hostname}:3003/get_movie_detail`, {
+        params: {
+          imdb_id: imdb_id,
+        }
       })
         .then(function (response) {
           // eslint-disable-next-line no-console

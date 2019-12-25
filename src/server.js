@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 
 const port = 3003;
 const app = express();
-const omdbUrl = " http://www.omdbapi.com/?i=tt3896198&apikey=3116896e";
+const omdbUrl = " http://www.omdbapi.com";
 // const apiKey = "3116896e";
 
 app.use(cors());
@@ -15,14 +15,16 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5
 
 app.get('/get_movie_detail',(request, response) => {
     // eslint-disable-next-line no-console
-    console.log(request.body);
+    console.log(request);
     let status = 200;
 
-    axios.post(`${omdbUrl}/?i=/${request.body.imdb_id}/&apikey=3116896e`, {})
+    axios.get(`${omdbUrl}/?i=${request.query.imdb_id}&apikey=3116896e`, {})
       .then(function (omdbResponse) {
         if (omdbResponse.status !== 200) {
           status = omdbResponse.status;
         } else {
+          // eslint-disable-next-line no-console
+          console.log(omdbResponse);
           response = omdbResponse;
         }
       })

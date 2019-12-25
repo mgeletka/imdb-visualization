@@ -61,6 +61,7 @@
         // eslint-disable-next-line no-console
         console.log("Inside click");
         this.$store.state.selectedMovie = movie;
+        this.$store.commit('UPDATE_MOVIE_DETAIL', movie)
       }
 
     },
