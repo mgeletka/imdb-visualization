@@ -1,24 +1,21 @@
 <template>
   <div id="app">
     <MovieFilter class="filter"/>
-    <Histogram class="histogram"/>
-    <PieChart class="pie-chart"/>
-    <MovieDetail class="movie_detail"/>
+    <BarChart class="barchart"/>
+    <MovieDetail class="movie_detail" :movie="$store.state.selectedMovie"/>
   </div>
 </template>
 
 <script>
   import MovieFilter from "./components/MovieFilter";
-  import Histogram from "./components/Histogram";
-  import PieChart from "./components/PieChart";
+  import BarChart from "./components/BarChart";
   import MovieDetail from "./components/MovieDetail";
 
   export default {
   name: 'app',
   components: {
     MovieDetail,
-    PieChart,
-    Histogram,
+    BarChart,
     MovieFilter,
   },
   created() {
@@ -46,7 +43,7 @@
 #app {
   display: grid;
   grid-template-columns: [first] 20% [line2] 50% [line3] 30% [last-line];
-  grid-template-rows: [row1-start] 60% [row1-end] 40%  [last-row];
+  grid-template-rows: [row1-start] 40% [row1-end] 60%  [last-row];
   height: 100vh;
   width: 100vw;
 }
@@ -59,21 +56,14 @@
     background-color: #cfcdc1;
   }
 
-  .histogram{
+  .barchart{
     grid-column-start: line2;
-    grid-column-end: line3;
-    grid-row-start: row1-start;
-    grid-row-end: row1-end;
-    background-color: #cf0d0e;
-  }
-
-  .pie-chart{
-    grid-column-start: line3;
     grid-column-end: last-line;
     grid-row-start: row1-start;
     grid-row-end: row1-end;
-    background-color: #0c6b05;
+    background-color: transparent;
   }
+
 
   .movie_detail{
     grid-column-start: line2;

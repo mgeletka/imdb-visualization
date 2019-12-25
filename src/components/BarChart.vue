@@ -1,0 +1,92 @@
+<template>
+    <div class="barchart-wrapper">
+        <div id="barchart_div" class="barchart"></div>
+    </div>
+</template>
+
+<script>
+  import * as d3 from "d3";
+
+  export default {
+    name: "BarChart",
+    data(){
+      return{
+        barChartArea: null,
+      };
+    },
+    methods: {
+      drawBarChart() {
+        if(this.barChartArea){
+          this.barChartArea.remove();
+        }
+
+        this.barChartArea = d3.select("#barchart_div").append("svg")
+          .attr("width", d3.select("#barchart_div").node().clientWidth)
+          .attr("height", d3.select("#barchart_div").node().clientHeight);
+
+        // let thisCanvasWidth = barChartArea.node().clientWidth;
+        let thisCanvasHeight = this.barChartArea.node().clientHeight;
+        let thisBarWidth = 60;
+
+        let i = 0;
+        this.moviesToVisualize.forEach(movie => {
+          let thisHeight = (movie.imdb_score / 10) * thisCanvasHeight ;
+
+          const self = this;
+          this.barChartArea.append('rect')
+            .on("click", function() { self.getMovieDetail(movie); })
+            .attr('x', (thisBarWidth * i))
+            .attr('y', thisCanvasHeight - 15)
+            .attr('width', thisBarWidth-10)
+            .attr('height', 0)
+            .attr('fill', 'red')
+            .transition() //Animation function
+            .duration(1000) //Duration in ms
+            .attr('y', thisCanvasHeight - thisHeight - 15)
+            .attr('height', thisHeight);
+
+
+          //Write a label for every 100th position
+          // barChartArea.append("text")
+          //   .attr('dx',  i * thisBarWidth)
+          //   .attr('dy', thisCanvasHeight )
+          //   .attr('class', 'label')
+          //   .text(movie.movie_title);
+
+          i++;
+        });
+      },
+
+      getMovieDetail(movie){
+        // eslint-disable-next-line no-console
+        console.log("Inside click");
+        this.$store.state.selectedMovie = movie;
+      }
+
+    },
+    mounted() {
+      this.drawBarChart()
+    },
+    computed: {
+      moviesToVisualize() {
+        return this.$store.state.moviesToVisualize;
+      },
+    },
+
+    watch: {
+      moviesToVisualize(newValue, oldValue) {
+        if(oldValue !== newValue){
+          this.drawBarChart();
+        }
+      },
+    },
+
+  }
+</script>
+
+<style scoped>
+    .barchart{
+        margin:50px;
+    }
+
+</style>

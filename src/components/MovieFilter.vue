@@ -7,7 +7,6 @@
                     v-on:selected="validateSelection"
                     v-on:filter="getDropdownValues"
                     :disabled="false"
-                    name="director"
                     :maxItem="5"
                     placeholder="Please select a director">
             </Dropdown>
@@ -15,27 +14,17 @@
         <div class="filter-item">
             <label class="item-name">Release year</label>
             <br>
-            <label>
-                Min year
-                <input  type="text" :value="rangevalue[0]">
-            </label>
-            <br>
-            <label>
-                Max year
-                <input type="text" :value="rangevalue[1]">
-            </label>
-            <ejs-slider v-model="rangevalue"  :min='$store.state.minYearOfMovie' :max='$store.state.maxYearOfMovie' :tooltip='{ isVisible: true }'
+
+            <ejs-slider v-model="releaseYearRange" :value="releaseYearRange" :min='$store.state.minYearOfMovie' :max='$store.state.maxYearOfMovie' :tooltip='{ isVisible: true }'
                         :ticks="{ placement: 'After', largeStep: 10, smallStep: 1, showSmallTicks: true }" type='Range'/>
         </div>
 
         <div class="filter-item">
-
             <label class="item-name">Numbers of filter movies
-                <br>
-                <input type="text" :value="numberOfMovies">
+                <ejs-slider id='format' :value='numberOfMovies' v-model="numberOfMovies" :min="2" :max="25" :step="1"
+                            :tooltip="{ isVisible: true }" :ticks="{ placement: 'After', largeStep: 2, smallStep: 1, showSmallTicks: true }"/>
             </label>
-            <ejs-slider id='format' :value='numberOfMovies' v-model="numberOfMovies" :min="2" :max="25" :step="1"
-                        :tooltip="{ isVisible: true }" :ticks="{ placement: 'After', largeStep: 2, smallStep: 1, showSmallTicks: true }"/>
+
         </div>
 
 
@@ -55,6 +44,10 @@
             </div>
         </div>
 
+        <div class="filter-item">
+            <div class="button_cont" align="center"><a class="filter-button" @click="showMovies()" target="_blank" > Show movies! </a></div>
+        </div>
+
     </div>
 </template>
 
@@ -65,10 +58,10 @@
     name: "MovieFilter",
     data: function() {
       return {
-        rangevalue: [1980,2000],
+        releaseYearRange: [1916,2016],
         numberOfMovies: 10,
-        // limits: { enabled: true, minStart: this.$store.state.minYearOfMovie, minEnd: this.$store.state.minYearOfMovie, maxStart: this.$store.state.maxYearOfMovie, maxEnd: this.$store.state.maxYearOfMovie },
-      checkedGenres: [],
+        checkedGenres: [],
+        selectedDirector: null,
         isCheckedAll: false,
       };
     },
@@ -76,9 +69,13 @@
       Dropdown,
     },
     methods:{
-      validateSelection(){
+      validateSelection(selectedOption){
+        this.selectedDirector = selectedOption.name;
       },
-      getDropdownValues(){
+      getDropdownValues(value){
+        // eslint-disable-next-line no-console
+        console.log(value);
+        return "None";
       },
 
       checkAll(){
@@ -90,9 +87,22 @@
           });
         }
       },
-      updateCheckall: function(){
+      showMovies(){
+        const filter = {
+          director: this.selectedDirector,
+          releaseDate: {
+            min: this.releaseYearRange[0],
+            max: this.releaseYearRange[1],
+          },
+          genres: this.checkedGenres,
+          numberOfMovies: this.numberOfMovies
+        };
         // eslint-disable-next-line no-console
-        console.log("Changed");
+        console.log(filter);
+        this.$store.commit('SHOW_MOVIES', filter);
+
+      },
+      updateCheckall: function(){
         this.isCheckedAll = this.checkedGenres.length === this.$store.state.genres.length;
       }
     },
@@ -100,7 +110,7 @@
   }
 </script>
 
-<style scoped>
+<style>
     .genres{
         display: flex;
         justify-content: flex-start;
@@ -113,8 +123,8 @@
 
     .filter-item{
         margin-bottom: auto;
-        margin-left: 10px;
-        margin-right: 15px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     .container {
@@ -124,6 +134,28 @@
 
     .item-name {
         font-weight: bold;
+    }
+
+    .filter-button {
+        color: #fff !important;
+        text-transform: uppercase;
+        text-decoration: none;
+        background: #ed3330;
+        padding: 20px;
+        border-radius: 5px;
+        display: inline-block;
+        border: none;
+        transition: all 0.4s ease 0s;
+    }
+
+    .filter-button:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+        cursor: pointer;
     }
 
 </style>
