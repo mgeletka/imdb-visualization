@@ -21,7 +21,7 @@
 
         <div class="filter-item">
             <label class="item-name">Numbers of filter movies
-                <ejs-slider id='format' :value='numberOfMovies' v-model="numberOfMovies" :min="2" :max="25" :step="1"
+                <ejs-slider id='format' :value='numberOfMovies' v-model="numberOfMovies" :min="2" :max="20" :step="1"
                             :tooltip="{ isVisible: true }" :ticks="{ placement: 'After', largeStep: 2, smallStep: 1, showSmallTicks: true }"/>
             </label>
 

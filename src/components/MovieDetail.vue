@@ -1,17 +1,31 @@
 <template>
-    <div style="height: 100%; width: 100%">
-        <div>
-            Movie Title: {{ $store.state.selectedMovie.title }}
+    <div class="movie-detail-container">
+        <div class="movie_detail-text">
+
+            <p class="title"> {{ movie.title }}</p>
             <br>
-            Director: {{ $store.state.selectedMovie.director }}
+            <p>
+                <span class="movie_detail-item-name"> Director: </span> {{ movie.director }}
+            </p>
             <br>
-            Imdb score: {{ $store.state.selectedMovie.imdbScore }}
+            <p>
+                 <span class="movie_detail-item-name">Imdb score:</span> {{ movie.imdbScore }}
+            </p>
             <br>
-            Actors: {{ $store.state.selectedMovie.actors }}
+            <p>
+                 <span class="movie_detail-item-name">Actors:</span> {{ movie.actors }}
+            </p>
             <br>
-            Plot: {{ movie.plot }}
+            <p>
+                 <span class="movie_detail-item-name">Plot:</span> {{ movie.plot }}
+            </p>
         </div>
-        <img :src="$store.state.selectedMovie.posterUrl" width="120" height="240">
+        <div>
+
+        </div>
+        <div class="movie_detail-image">
+            <img :src="movie.posterUrl">
+        </div>
 
     </div>
 </template>
@@ -26,5 +40,32 @@
 </script>
 
 <style scoped>
+    .title{
+        font-weight: bold;
+        font-size: xx-large;
+    }
+
+    .movie-detail-container{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .movie_detail-text{
+        margin-left: 20px;
+    }
+
+    .movie_detail-image{
+        margin: 20px;
+    }
+
+    .movie_detail-item-name{
+        font-weight: bold;
+    }
+
+    p{
+        font-size: large;
+    }
 
 </style>

@@ -6,6 +6,8 @@
 
 <script>
   import * as d3 from "d3";
+  // var tip = require("d3-tip");
+
 
   export default {
     name: "BarChart",
@@ -34,17 +36,28 @@
           let thisHeight = ((movie.imdb_score - min_value + 0.1) / (10 - min_value + 0.1)) * thisCanvasHeight ;
 
           const self = this;
+          //
+          // const myTip = tip
+          //   .attr('class', 'd3-tip')
+          //   .offset([-10, 0])
+          //   .html(function(d) {
+          //     return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+          //   });
+
           this.barChartArea.append('rect')
             .on("click", function() { self.getMovieDetail(movie); })
+            // .on('mouseover', myTip.show)
+            // .on('mouseout', myTip.hide)
             .attr('x', (thisBarWidth * i))
             .attr('y', thisCanvasHeight - 15)
             .attr('width', thisBarWidth-10)
             .attr('height', 0)
-            .attr('fill', 'red')
-            .transition() //Animation function
+            // .attr('fill', 'red')
+            .attr("class", "bar")
+                  .transition() //Animation function
             .duration(1000) //Duration in ms
             .attr('y', thisCanvasHeight - thisHeight - 15)
-            .attr('height', thisHeight);
+            .attr('height', thisHeight*2.5);
 
 
           i++;
@@ -82,9 +95,18 @@
   }
 </script>
 
-<style scoped>
+<style>
     .barchart{
         margin:50px;
+    }
+
+    .bar {
+        fill: #e91b1b;
+    }
+
+    .bar:hover {
+        fill: #354a5e;
+        cursor: pointer;
     }
 
 </style>
