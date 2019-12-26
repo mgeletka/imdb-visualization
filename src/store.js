@@ -24,7 +24,7 @@ function getMoviesToVisualize(data, filter) {
         moviesToVisualize.push(movie);
       }
   });
-  moviesToVisualize.sort((a, b) => {return parseFloat(a.imdb_score) - parseFloat(b.imdb_score)});
+  moviesToVisualize.sort((a, b) => {return parseFloat(b.imdb_score) - parseFloat(a.imdb_score)});
 
   return moviesToVisualize.slice(0, filter.numberOfMovies);
 
@@ -47,7 +47,14 @@ export default new Vuex.Store({
     minYearOfMovie: null,
     maxYearOfMovie: null,
     moviesToVisualize: [],
-    selectedMovie: null,
+    selectedMovie: {
+      title: "",
+      director:"",
+      imdbScore: 0,
+      plot: "",
+      actors: "",
+      posterUrl: null,
+    },
     errorGettingMovieDetail: false,
   },
   mutations:{
@@ -58,7 +65,6 @@ export default new Vuex.Store({
       state.data = data;
       state.minYearOfMovie = parseInt(data[0].title_year);
       state.maxYearOfMovie = parseInt(data[0].title_year);
-      state.selectedMovie = data[0];
       data.forEach((movie) =>{
         if(state.minYearOfMovie > parseInt(movie.title_year)){
           state.minYearOfMovie = movie.title_year
@@ -114,7 +120,11 @@ export default new Vuex.Store({
             state.errorGettingMovieDetail = true;
           } else {
             // eslint-disable-next-line no-console
-            console.log("Succesfully get movie detail");
+            console.log(response.data);
+            state.selectedMovie.plot = response.data.movieDetail.Plot;
+            state.selectedMovie.actors = response.data.movieDetail.Actors;
+            state.selectedMovie.posterUrl = response.data.movieDetail.Poster;
+
           }
         })
         .catch(function () {

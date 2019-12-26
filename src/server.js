@@ -12,28 +12,33 @@ const omdbUrl = " http://www.omdbapi.com";
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+app.set('json spaces', 40);
+
 
 app.get('/get_movie_detail',(request, response) => {
-    // eslint-disable-next-line no-console
-    console.log(request);
+
     let status = 200;
 
     axios.get(`${omdbUrl}/?i=${request.query.imdb_id}&apikey=3116896e`, {})
       .then(function (omdbResponse) {
-        if (omdbResponse.status !== 200) {
+        // eslint-disable-next-line no-console
+        console.log(omdbResponse.data);
           status = omdbResponse.status;
-        } else {
-          // eslint-disable-next-line no-console
-          console.log(omdbResponse);
-          response = omdbResponse;
-        }
+          response.status(status).json({movieDetail: omdbResponse.data});
+
       })
       .catch(function () {
-        response = { responseText: "Cannot send voice print" };
+        response.status(500).json({movieDetail: {}});
       });
 
-    response.status(status).json({status: response});
-  }
+
+    // // eslint-disable-next-line no-console
+    // console.log(responseData);
+    // response.setHeader('Content-Type', 'application/json');
+    // response.data(responseData);
+    //
+    // response.end(JSON.stringify({ movieDetail: responseData }));
+}
 );
 
 // eslint-disable-next-line no-console

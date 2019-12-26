@@ -29,8 +29,9 @@
         let thisBarWidth = 60;
 
         let i = 0;
+        let min_value = this.moviesToVisualize[this.moviesToVisualize.length -1].imdb_score;
         this.moviesToVisualize.forEach(movie => {
-          let thisHeight = (movie.imdb_score / 10) * thisCanvasHeight ;
+          let thisHeight = ((movie.imdb_score - min_value + 0.1) / (10 - min_value + 0.1)) * thisCanvasHeight ;
 
           const self = this;
           this.barChartArea.append('rect')
@@ -46,13 +47,6 @@
             .attr('height', thisHeight);
 
 
-          //Write a label for every 100th position
-          // barChartArea.append("text")
-          //   .attr('dx',  i * thisBarWidth)
-          //   .attr('dy', thisCanvasHeight )
-          //   .attr('class', 'label')
-          //   .text(movie.movie_title);
-
           i++;
         });
       },
@@ -60,7 +54,10 @@
       getMovieDetail(movie){
         // eslint-disable-next-line no-console
         console.log("Inside click");
-        this.$store.state.selectedMovie = movie;
+        this.$store.state.selectedMovie.title = movie.movie_title;
+        this.$store.state.selectedMovie.director = movie.director_name;
+        this.$store.state.selectedMovie.imdbScore = movie.imdb_score;
+
         this.$store.commit('UPDATE_MOVIE_DETAIL', movie)
       }
 
