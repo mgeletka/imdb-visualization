@@ -30,6 +30,38 @@ function getMoviesToVisualize(data, filter) {
 
 }
 
+function getMovieDetail(state, movie) {
+  const url_without_prefix = movie.movie_imdb_link.substr(26);
+  const imdb_id = url_without_prefix.substr(0,  url_without_prefix.indexOf("/"));
+
+  axios.get(`http://${window.location.hostname}:3003/get_movie_detail`, {
+    params: {
+      imdb_id: imdb_id,
+    }
+  })
+    .then(function (response) {
+      // eslint-disable-next-line no-console
+      console.log(response);
+      if (response.status !== 200) {
+        state.errorGettingMovieDetail = true;
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(response.data);
+        state.selectedMovie.plot = response.data.movieDetail.Plot;
+        state.selectedMovie.actors = response.data.movieDetail.Actors;
+        state.selectedMovie.posterUrl = response.data.movieDetail.Poster;
+        state.selectedMovie.awards = response.data.movieDetail.Awards;
+        state.selectedMovie.released = response.data.movieDetail.Released;
+
+      }
+    })
+    .catch(function () {
+      state.errorGettingMovieDetail = true;
+    });
+
+}
+
+
 export default new Vuex.Store({
   state: {
     filter: {
@@ -39,7 +71,7 @@ export default new Vuex.Store({
       },
       director: null,
       genres: [],
-      numberOfMovies: 10,
+      numberOfMovies: 20,
     },
     data: null,
     genres: [],
@@ -53,6 +85,8 @@ export default new Vuex.Store({
       imdbScore: 0,
       plot: "",
       actors: "",
+      awards: "",
+      released: "",
       posterUrl: null,
     },
     errorGettingMovieDetail: false,
@@ -88,13 +122,15 @@ export default new Vuex.Store({
         state.directors.push({id: i, name: director});
         i++;
       });
-      // eslint-disable-next-line no-console
-      console.log(state.directors);
-      // eslint-disable-next-line no-console
-      console.log(state.genres);
       state.directors.sort();
       state.genres.sort();
-      state.moviesToVisualize = getMoviesToVisualize(state.data, state.filter)
+
+      state.filter.genres = genres;
+      state.moviesToVisualize = getMoviesToVisualize(state.data, state.filter);
+      state.selectedMovie.title = state.moviesToVisualize[0].movie_title;
+      state.selectedMovie.imdbScore = state.moviesToVisualize[0].imdb_score;
+      state.selectedMovie.director = state.moviesToVisualize[0].director_name;
+      getMovieDetail(state, state.moviesToVisualize[0])
     });
   },
     SHOW_MOVIES(state, filter) {
@@ -102,34 +138,11 @@ export default new Vuex.Store({
       console.log(filter);
       state.filter = filter;
       state.moviesToVisualize = getMoviesToVisualize(state.data, filter);
+
     },
 
     UPDATE_MOVIE_DETAIL(state, movie) {
-      const url_without_prefix = movie.movie_imdb_link.substr(26);
-      const imdb_id = url_without_prefix.substr(0,  url_without_prefix.indexOf("/"));
-
-      axios.get(`http://${window.location.hostname}:3003/get_movie_detail`, {
-        params: {
-          imdb_id: imdb_id,
-        }
-      })
-        .then(function (response) {
-          // eslint-disable-next-line no-console
-          console.log(response);
-          if (response.status !== 200) {
-            state.errorGettingMovieDetail = true;
-          } else {
-            // eslint-disable-next-line no-console
-            console.log(response.data);
-            state.selectedMovie.plot = response.data.movieDetail.Plot;
-            state.selectedMovie.actors = response.data.movieDetail.Actors;
-            state.selectedMovie.posterUrl = response.data.movieDetail.Poster;
-
-          }
-        })
-        .catch(function () {
-          state.errorGettingMovieDetail = true;
-        });
+      getMovieDetail(state, movie)
 
     }
 

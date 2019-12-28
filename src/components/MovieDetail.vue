@@ -1,6 +1,6 @@
 <template>
     <div class="movie-detail-container">
-        <div class="movie_detail-text">
+        <div class="movie-detail-text">
 
             <p class="title"> {{ movie.title }}</p>
             <br>
@@ -9,7 +9,15 @@
             </p>
             <br>
             <p>
+                <span class="movie_detail-item-name">Released:</span> {{ movie.released }}
+            </p>
+            <br>
+            <p>
                  <span class="movie_detail-item-name">Imdb score:</span> {{ movie.imdbScore }}
+            </p>
+            <br>
+            <p>
+                <span class="movie_detail-item-name">Awards:</span> {{ movie.awards }}
             </p>
             <br>
             <p>
@@ -52,8 +60,9 @@
         justify-content: flex-start;
     }
 
-    .movie_detail-text{
+    .movie-detail-text{
         margin-left: 20px;
+        margin-bottom: 20px;
     }
 
     .movie_detail-image{

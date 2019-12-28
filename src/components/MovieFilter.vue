@@ -15,7 +15,7 @@
             <label class="item-name">Release year</label>
             <br>
 
-            <ejs-slider v-model="releaseYearRange" :value="releaseYearRange" :min='$store.state.minYearOfMovie' :max='$store.state.maxYearOfMovie' :tooltip='{ isVisible: true }'
+            <ejs-slider v-model="releaseYearRange" :min='$store.state.minYearOfMovie' :max='$store.state.maxYearOfMovie' :tooltip='{ isVisible: true }'
                         :ticks="{ placement: 'After', largeStep: 10, smallStep: 1, showSmallTicks: true }" type='Range'/>
         </div>
 
@@ -44,7 +44,7 @@
         </div>
 
         <div class="filter-item">
-            <div class="button_cont" align="center"><a class="filter-button" @click="showMovies()" target="_blank" > Show movies! </a></div>
+            <div class="button_cont" align="center"><a class="filter-button" :class="{disabled: checkedGenres.length === 0 }" @click="showMovies()"  target="_blank" > Show movies! </a></div>
         </div>
 
     </div>
@@ -106,6 +106,12 @@
       }
     },
 
+    mounted() {
+      setTimeout(()=>{
+        this. releaseYearRange =  [1916,2016]
+      }, 1500)
+    }
+
   }
 </script>
 
@@ -155,6 +161,21 @@
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
         transition: all 0.4s ease 0s;
         cursor: pointer;
+    }
+
+    .filter-button.disabled {
+        background: #434343;
+    }
+
+    .filter-button.disabled:hover {
+        background: #434343;
+        cursor: not-allowed;
+        transition: none;
+        letter-spacing:0;
+        -webkit-box-shadow:none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+
     }
 
 </style>
