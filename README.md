@@ -1,5 +1,6 @@
 # imdb-vizualization
 
+#GITHUB at `https://github.com/mgeletka/imdb-visualization`
 ## Project setup
 ```
 npm install
