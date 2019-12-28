@@ -1,19 +1,19 @@
 <template>
     <div class="barchart-wrapper" ref="barchartWrapper">
+
         <div v-if="moviesToVisualize" id="barchart_div" ref="barcharDiv" class="barchart"></div>
         <svg style="width:100%;height:100%;">
-            <rect class="bar" v-for="(movie, index) in moviesToVisualize" :key="movie.movie_title" :x="barWidth * (index+1)" :y="canvasHeight - getHeight(movie) - 15"
-                  :height="getHeight(movie)" :width="barWidth - 10" @click="getMovieDetail(movie)" >
-<!--                <animate attributeName="height" :from="0" :to="getHeight(movie)" dur="3s" fill="freeze"/>-->
-<!--                <animate attributeName="y" :from="canvasHeight - getHeight(movie) - 15" :to="canvasHeight - 15" dur="3s" fill="freeze"/>-->
-
+            <rect class="bar" v-for="(movie, index) in moviesToVisualize" :key="movie.movie_title" :x="barWidth * (index+1)" :y="canvasHeight - getHeight(movie)"
+                  :height="getHeight(movie)" :width="barWidth - 10" @click="getMovieDetail(movie)"  v-tooltip.top-center="getTooltipText(movie)"
+            >
+<!--                <animate attributeName="height" from="0" :to="getHeight(movie)" dur="5s" fill="freeze"/>-->
+<!--                <animate attributeName="y" :from="canvasHeight- 15" :to="canvasHeight - getHeight(movie) - 15" dur="5s" fill="freeze"/>-->
             </rect>
         </svg>
     </div>
 </template>
 
 <script>
-  // import * as d3 from "d3";
 
 
   export default {
@@ -24,62 +24,6 @@
       };
     },
     methods: {
-
-      drawBarChart() {
-        // if(this.barChartArea){
-        //   this.barChartArea.remove();
-        // }
-
-        // this.barChartArea = d3.select("#barchart_div").append("svg")
-        //   .attr("width", d3.select("#barchart_div").node().clientWidth)
-        //   .attr("height", d3.select("#barchart_div").node().clientHeight);
-        //
-        // // let thisCanvasWidth = barChartArea.node().clientWidth;
-        // let canvasHeight = this.barChartArea.node().clientHeight;
-        // let barWidth = 60;
-        //
-        // let i = 0;
-        // let min_value = this.moviesToVisualize[this.moviesToVisualize.length -1].imdb_score;
-        // this.moviesToVisualize.forEach(movie => {
-        //   let thisHeight = ((movie.imdb_score - min_value + 0.1) / (10 - min_value + 0.1)) * canvasHeight ;
-        //
-        //   const self = this;
-        //
-        //   // const myTip = tip
-        //   //   .attr('class', 'd3-tip')
-        //   //   .offset([-10, 0])
-        //   //   .html(function(d) {
-        //   //     return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
-        //   //   });
-        //
-        //   // var tip = d3.tip()
-        //   //   .attr('class', 'd3-tip')
-        //   //   .offset([-10, 0])
-        //   //   .html(function(d) {
-        //   //     return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
-        //   //   });
-        //
-        //
-        //   this.barChartArea.append('rect')
-        //     .on("click", function() { self.getMovieDetail(movie); })
-        //     // .on('mouseover', myTip.show)
-        //     // .on('mouseout', myTip.hide)
-        //     .attr('x', (barWidth * i))
-        //     .attr('y', canvasHeight - 15)
-        //     .attr('width', barWidth-10)
-        //     .attr('height', 0)
-        //     // .attr('fill', 'red')
-        //     .attr("class", "bar")
-        //           .transition() //Animation function
-        //     .duration(1000) //Duration in ms
-        //     .attr('y', canvasHeight - thisHeight - 15)
-        //     .attr('height', thisHeight*2.5);
-        //
-        //
-        //   i++;
-        // });
-      },
-
       getMovieDetail(movie){
         // eslint-disable-next-line no-console
         console.log("Inside click");
@@ -92,35 +36,25 @@
       getHeight(movie){
         return movie.imdb_score / 10 * this.canvasHeight;
       },
+      getTooltipText(movie){
+        return  movie.movie_title + "<br>" + "IMDB score: " + movie.imdb_score;
+      }
 
-    },
-    mounted() {
-      this.drawBarChart()
     },
     computed: {
       moviesToVisualize() {
         return this.$store.state.moviesToVisualize;
-      },
-      minValue(){
-        return this.moviesToVisualize[this.moviesToVisualize.length -1].imdb_score;
       },
       canvasHeight(){
         return this.$refs.barchartWrapper ? this.$refs.barchartWrapper.clientHeight : 0;
       },
     },
 
-    watch: {
-      moviesToVisualize(newValue, oldValue) {
-        if(oldValue !== newValue){
-          this.drawBarChart();
-        }
-      },
-    },
 
   }
 </script>
 
-<style>
+<style type="scss">
     .barchart{
         margin:50px;
     }
@@ -134,5 +68,112 @@
         fill: #354a5e;
         cursor: pointer;
     }
+    .tooltip {
+        display: block !important;
+        z-index: 10000;
+    }
+
+    .tooltip .tooltip-inner {
+        background: black;
+        color: white;
+        border-radius: 16px;
+        padding: 5px 10px 4px;
+    }
+
+    .tooltip .tooltip-arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+        margin: 5px;
+        border-color: black;
+        z-index: 1;
+    }
+
+    .tooltip[x-placement^="top"] {
+        margin-bottom: 5px;
+    }
+
+    .tooltip[x-placement^="top"] .tooltip-arrow {
+        border-width: 5px 5px 0 5px;
+        border-left-color: transparent !important;
+        border-right-color: transparent !important;
+        border-bottom-color: transparent !important;
+        bottom: -5px;
+        left: calc(50% - 5px);
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .tooltip[x-placement^="bottom"] {
+        margin-top: 5px;
+    }
+
+    .tooltip[x-placement^="bottom"] .tooltip-arrow {
+        border-width: 0 5px 5px 5px;
+        border-left-color: transparent !important;
+        border-right-color: transparent !important;
+        border-top-color: transparent !important;
+        top: -5px;
+        left: calc(50% - 5px);
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .tooltip[x-placement^="right"] {
+        margin-left: 5px;
+    }
+
+    .tooltip[x-placement^="right"] .tooltip-arrow {
+        border-width: 5px 5px 5px 0;
+        border-left-color: transparent !important;
+        border-top-color: transparent !important;
+        border-bottom-color: transparent !important;
+        left: -5px;
+        top: calc(50% - 5px);
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .tooltip[x-placement^="left"] {
+        margin-right: 5px;
+    }
+
+    .tooltip[x-placement^="left"] .tooltip-arrow {
+        border-width: 5px 0 5px 5px;
+        border-top-color: transparent !important;
+        border-right-color: transparent !important;
+        border-bottom-color: transparent !important;
+        right: -5px;
+        top: calc(50% - 5px);
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .tooltip.popover .popover-inner {
+        background: #f9f9f9;
+        color: black;
+        padding: 24px;
+        border-radius: 5px;
+        box-shadow: 0 5px 30px rgba(black, .1);
+    }
+
+    .tooltip.popover .popover-arrow {
+        border-color: #f9f9f9;
+    }
+
+    .tooltip[aria-hidden='true'] {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .15s, visibility .15s;
+    }
+
+    .tooltip[aria-hidden='false'] {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .15s;
+    }
+
+
 
 </style>

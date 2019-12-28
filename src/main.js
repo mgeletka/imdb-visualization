@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store';
 import { SliderPlugin } from "@syncfusion/ej2-vue-inputs";
+import VTooltip from 'v-tooltip'
+Vue.use(VTooltip)
+
 
 Vue.use(SliderPlugin);
 
