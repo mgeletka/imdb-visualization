@@ -1,12 +1,16 @@
 # imdb-vizualization
+The project visualize the dataset available at `https://github.com/mgeletka/imdb-visualization`, allows filter and show details about best reviewed movies from this dataset
 
-#GITHUB at `https://github.com/mgeletka/imdb-visualization`
+The project is written in Vue.js and in BE uses simple express app for communication with omdb server. 
+
+The project GITHUB is available at `https://github.com/mgeletka/imdb-visualization`.
+After project setup just run build version and open in the browser localhost on port 3003
 ## Project setup
 ```
 npm install
 ```
 
-### To run build version, the version will be runnin on localhost:3003
+### To run build  from dist folder
 ```
 npm start
 ```
