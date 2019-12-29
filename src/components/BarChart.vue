@@ -1,14 +1,16 @@
 <template>
     <div class="barchart-wrapper" ref="barchartWrapper">
-        <svg ref="svgBarchart" width="100%" height="100%" v-if="moviesToVisualize">
+        <div style="height: 100%; width: 100%; margin-top: 50px">
+        <svg ref="svgBarchart" width="100%" :height="canvasHeight" v-if="moviesToVisualize">
             <g transform="scale(1,-1) translate(0,-200)" style="width:100%;height:100%">
 <!--                <rect class="bar" :x="0" :y="0" :height="1500" :width="barWidth - 10"></rect>-->
-            <rect class="bar" v-for="(movie, index) in moviesToVisualize" :key="movie.movie_title" :x="barWidth * (index+1)" :y="0"
+            <rect class="bar" v-for="(movie, index) in moviesToVisualize" :key="movie.movie_title" :x="barWidth * (index+1)" :y="-50"
                   :height="getHeight(movie)" :width="barWidth - 10" @click="getMovieDetail(movie)"   v-tooltip.top-center="getTooltipText(movie)">
             </rect>
 
             </g>
         </svg>
+        </div>
     </div>
 </template>
 
@@ -55,7 +57,8 @@
         return this.$store.state.moviesToVisualize;
       },
       canvasHeight(){
-        return this.$refs.barchartWrapper ? this.$refs.barchartWrapper.clientHeight : 0;
+        return window.screen.height*0.4;
+        // return this.$refs.barchartWrapper ? this.$refs.barchartWrapper.clientHeight : 0;
       },
     },
     watch: {
@@ -88,9 +91,9 @@
         z-index: 10000;
     }
 
-    svg{
-        margin-top: 50px;
-    }
+    /*svg{*/
+    /*    margin-top: 50px;*/
+    /*}*/
 
     .tooltip .tooltip-inner {
         background: black;
