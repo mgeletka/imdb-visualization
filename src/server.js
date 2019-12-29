@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 
-const port = 3003;
+const port = process.env.PORT || 3003;
 const app = express();
 const omdbUrl = " http://www.omdbapi.com";
 // const apiKey = "3116896e";
