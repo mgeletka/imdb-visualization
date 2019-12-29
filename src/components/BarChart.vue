@@ -3,8 +3,7 @@
         <div style="height: 100%; width: 100%; margin-top: 50px">
         <svg ref="svgBarchart" width="100%" :height="canvasHeight" v-if="moviesToVisualize">
             <g transform="scale(1,-1) translate(0,-200)" style="width:100%;height:100%">
-<!--                <rect class="bar" :x="0" :y="0" :height="1500" :width="barWidth - 10"></rect>-->
-            <rect class="bar" v-for="(movie, index) in moviesToVisualize" :key="movie.movie_title" :x="barWidth * (index+1)" :y="-50"
+            <rect class="bar" v-for="(movie, index) in moviesToVisualize" :key="movie.movie_title" :x="barWidth * (index+1)" :y="-canvasHeight + 150"
                   :height="getHeight(movie)" :width="barWidth - 10" @click="getMovieDetail(movie)"   v-tooltip.top-center="getTooltipText(movie)">
             </rect>
 
@@ -44,8 +43,8 @@
             }
           },10);
         }
-        const minValue = this.moviesToVisualize[this.moviesToVisualize.length - 1].imdb_score;
-        return (movie.imdb_score - minValue + 0.5) / (10 - minValue + 0.5) * this.canvasHeight * (this.timemoutToGrow/300.0);
+        // const minValue = this.moviesToVisualize[this.moviesToVisualize.length - 1].imdb_score;
+        return (movie.imdb_score ) / (10) * this.canvasHeight * (this.timemoutToGrow/300.0);
       },
       getTooltipText(movie){
         return  movie.movie_title + "<br>" + "IMDB score: " + movie.imdb_score;
@@ -74,10 +73,6 @@
 </script>
 
 <style type="scss">
-    /*.barchart{*/
-    /*    margin:50px;*/
-    /*}*/
-
     .bar {
         fill: #e91b1b;
     }
