@@ -34,7 +34,7 @@ function getMovieDetail(state, movie) {
   const url_without_prefix = movie.movie_imdb_link.substr(26);
   const imdb_id = url_without_prefix.substr(0,  url_without_prefix.indexOf("/"));
 
-  axios.get(`http://${window.location.hostname}:3003/get_movie_detail`, {
+  axios.get(`http://${window.location.hostname}:${state.serverPort}/get_movie_detail`, {
     params: {
       imdb_id: imdb_id,
     }
@@ -90,6 +90,7 @@ export default new Vuex.Store({
       posterUrl: null,
     },
     errorGettingMovieDetail: false,
+    serverPort: window.location.port,
   },
   mutations:{
   LOAD_DATA(state)  {

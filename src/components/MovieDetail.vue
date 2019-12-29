@@ -7,7 +7,6 @@
             <p>
                 <span class="movie_detail-item-name"> Director: </span> {{ movie.director }}
             </p>
-            <br>
             <p>
                 <span class="movie_detail-item-name">Released:</span> {{ movie.released }}
             </p>
@@ -15,7 +14,6 @@
             <p>
                  <span class="movie_detail-item-name">Imdb score:</span> {{ movie.imdbScore }}
             </p>
-            <br>
             <p>
                 <span class="movie_detail-item-name">Awards:</span> {{ movie.awards }}
             </p>
@@ -23,7 +21,6 @@
             <p>
                  <span class="movie_detail-item-name">Actors:</span> {{ movie.actors }}
             </p>
-            <br>
             <p>
                  <span class="movie_detail-item-name">Plot:</span> {{ movie.plot }}
             </p>
@@ -62,7 +59,6 @@
 
     .movie-detail-text{
         margin-left: 20px;
-        margin-bottom: 20px;
     }
 
     .movie_detail-image{
