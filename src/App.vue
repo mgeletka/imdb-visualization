@@ -53,7 +53,8 @@
     grid-column-end: line2;
     grid-row-start: row1-start;
     grid-row-end: last-row;
-    background-color: #cfcdc1;
+    background: rgb(255,255,255);
+    background: linear-gradient(281deg, rgba(255,255,255,1) 0%, rgba(207,205,193,1) 100%);;
   }
 
   .barchart{
@@ -61,8 +62,8 @@
     grid-column-end: last-line;
     grid-row-start: row1-start;
     grid-row-end: row1-end;
-    background-color: transparent;
-  }
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(222,222,222,1) 100%);  }
 
 
   .movie_detail{
@@ -70,8 +71,8 @@
     grid-column-end: liner3;
     grid-row-start: row1-end;
     grid-row-end: last-row;
-    background-color: #455a6d;
-  }
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(69,90,109,1) 100%); }
 
 
 
